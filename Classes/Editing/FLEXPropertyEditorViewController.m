@@ -13,6 +13,8 @@
 #import "FLEXArgumentInputViewFactory.h"
 #import "FLEXArgumentInputSwitchView.h"
 
+FLEX_DidEditProperty _didEditProperty;
+
 @interface FLEXPropertyEditorViewController () <FLEXArgumentInputViewDelegate>
 
 @property (nonatomic, assign) objc_property_t property;
@@ -20,6 +22,14 @@
 @end
 
 @implementation FLEXPropertyEditorViewController
+
++ (FLEX_DidEditProperty)didEditProperty {
+    return _didEditProperty;
+}
+
++ (void)setDidEditProperty:(FLEX_DidEditProperty)didEditProperty {
+    _didEditProperty = didEditProperty;
+}
 
 - (id)initWithTarget:(id)target property:(objc_property_t)property
 {
@@ -61,6 +71,9 @@
     SEL setterSelector = [FLEXRuntimeUtility setterSelectorForProperty:self.property];
     NSError *error = nil;
     [FLEXRuntimeUtility performSelector:setterSelector onObject:self.target withArguments:arguments error:&error];
+    if (_didEditProperty) {
+        _didEditProperty(self.target, NSStringFromSelector(setterSelector), arguments);
+    }
     if (error) {
         NSString *title = @"Property Setter Failed";
         NSString *message = [error localizedDescription];

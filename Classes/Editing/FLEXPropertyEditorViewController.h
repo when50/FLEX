@@ -9,7 +9,12 @@
 #import "FLEXMutableFieldEditorViewController.h"
 #import <objc/runtime.h>
 
+typedef void (^FLEX_DidEditProperty)(NSObject *object, NSString *property, id value);
+
 @interface FLEXPropertyEditorViewController : FLEXMutableFieldEditorViewController
+
++ (FLEX_DidEditProperty __nullable)didEditProperty;
++ (void)setDidEditProperty:(FLEX_DidEditProperty)didEditProperty;
 
 - (id)initWithTarget:(id)target property:(objc_property_t)property;
 
