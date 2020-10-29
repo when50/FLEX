@@ -9,7 +9,7 @@
 #import "FLEXMutableFieldEditorViewController.h"
 #import <objc/runtime.h>
 
-typedef void (^FLEX_DidEditProperty)(NSObject *object, NSString *property, id value);
+typedef void (^FLEX_DidEditProperty)(NSObject *object, NSString *property, id oldValue, id value);
 
 @interface FLEXPropertyEditorViewController : FLEXMutableFieldEditorViewController
 
